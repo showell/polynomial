@@ -431,7 +431,7 @@ class _Term:
 
 class Poly:
     def __init__(self, terms):
-        if type(terms) == _Term:
+        if type(terms) in (_Term, str):
             raise ValueError(
                 "Pass in a list of _Terms or use Poly's other constructors."
             )
