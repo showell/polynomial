@@ -10,6 +10,14 @@ class IntegerMath:
         return a + b
 
     @staticmethod
+    def coeff_str(c):
+        """
+        Put our constants in parentheses if they are negative.
+        """
+        assert type(c) == int
+        return str(c) if c > 0 else f"({c})"
+
+    @staticmethod
     def mul(a, b):
         assert type(a) == int
         assert type(b) == int

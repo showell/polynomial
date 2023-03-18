@@ -13,6 +13,11 @@ class FractionMath:
         return a + b
 
     @staticmethod
+    def coeff_str(c):
+        assert type(c) == Fraction
+        return str(c) if c > 0 else f"({c})"
+
+    @staticmethod
     def mul(a, b):
         assert type(a) == Fraction
         assert type(b) == Fraction

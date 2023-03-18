@@ -17,6 +17,10 @@ class ModulusMath:
         assert 0 <= x
         assert x < self.modulus
 
+    def coeff_str(self, c):
+        assert type(c) == int
+        return str(c) if c > 0 else f"({c})"
+
     def mul(self, a, b):
         self.check(a)
         self.check(b)

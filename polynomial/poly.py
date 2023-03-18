@@ -53,14 +53,16 @@ ABOUT EXPONENTS (important):
     have to enforce non-negative integer exponents to support
     the "substitution" operation on polynomials.  Think of exponentiation
     as just a shorthand for repeated multiplication, so for our purposes
-    exponents will always be actual positive integers.  We also allow
-    exponents of zero, but they essentially get simplified away in Poly.
+    exponents will always be actual positive integers (or zero for the
+    constant term).
 
 Useful references:
     * https://docs.python.org/3/library/operator.html
     * https://en.wikipedia.org/wiki/Polynomial
     * https://en.wikipedia.org/wiki/Modular_arithmetic
     * https://en.wikipedia.org/wiki/Commutative_ring
+    * https://www.youtube.com/playlist?list=PLi01XoE8jYoi3SgnnGorR_XOW3IcK-TP6
+      (Abstract Algebra)
 
 (*) - We assume not only a commutative ring, but also a commutative
       ring with a multiplicative identity, which we call "one".
@@ -71,8 +73,8 @@ Math = integer_math.IntegerMath
 
 def set_math(handler):
     """
-    Allow us to build up polynomials with a Math type that isn't
-    necessarily based on integers.  We rely on the caller to provide
+    The set_math helper allows you to build up polynomials with a Math type
+    that isn't necessarily based on integers.  We rely on the caller to provide
     a handler that behaves like integers in terms of algebraic structure.
     See integer_math.py for the most obvious implementation of a handler.
 
@@ -169,6 +171,9 @@ class _Term:
     We also keep a dictionary keyed on var names for quick lookups,
     as well as a "sig" that represents the signature of our term.
     Two terms can only be combined if they have the same sig.
+
+    The Poly class often directly inspects the _Term objects,
+    so consider the names of _Term's fields to be part of its API.
     """
 
     def __init__(self, coeff, var_powers):
@@ -189,10 +194,10 @@ class _Term:
     def apply(self, **var_assignments):
         """
         This substitutes variables in our term with actual
-        values, producing a simpler Term.
+        values, producing a simpler _Term.
 
         If we get passed in var names that we don't know about,
-        just ignore them.
+        we just ignore them.
 
         If none of the vars are in our term, then we just
         return ourself.  See Poly.apply for more context.
@@ -218,20 +223,13 @@ class _Term:
         """
         An example string is "60*x*(y**22)".
         """
-        coeff_str = self.coeff_str()
+        coeff_str = Math.coeff_str(self.coeff)
 
         if self.is_constant():
             return coeff_str
         if self.coeff == Math.one:
             return self.sig
         return coeff_str + "*" + self.sig
-
-    def coeff_str(self):
-        """
-        Put our constants in parentheses if they are negative.
-        """
-        c = self.coeff
-        return str(c) if c > 0 else f"({c})"
 
     def degree_of_var(self, var_name):
         """
