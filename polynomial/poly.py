@@ -619,9 +619,6 @@ class Poly:
         return Poly([term.negate() for term in self.terms])
 
     def numpy_vector(self):
-        """
-        See numpy_example.py for more context.
-        """
         my_var_names = self.variables()
         if len(my_var_names) != 1:
             raise ValueError("This only works for polynomials over a single variable")

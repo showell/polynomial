@@ -174,5 +174,3 @@ horner = 1 + x * (2 + x * (3 + x * (4 + x * (5 + 6 * x))))
 assert_str(horner, "6*(x**5)+5*(x**4)+4*(x**3)+3*(x**2)+2*x+1")
 # ^^^^ And then horner.eval() actually computes x**5, x**4, x**3,
 #      and x**2 independently.
-
-# See also poly_mod_example.py and poly_fraction_example.py
