@@ -31,7 +31,7 @@ and all these operations happen at the symbolic level until you
 provide actual value assignments for the variables.
 
 Very importantly, the Poly class assumes that its values form a
-"commutative ring."  You don't need to understand that terminology
+"commutative ring" (*). You don't need to understand that terminology
 in a deep sense, as long as you are playing with integers.
 Basically we assume that multiplication and addition conform
 to our standard intuitive notions of how numbers work.
@@ -62,6 +62,8 @@ Useful references:
     * https://en.wikipedia.org/wiki/Modular_arithmetic
     * https://en.wikipedia.org/wiki/Commutative_ring
 
+(*) - We assume not only a commutative ring, but also a commutative
+      ring with a multiplicative identity, which we call "one".
 """
 
 Math = integer_math.IntegerMath
@@ -81,6 +83,10 @@ def set_math(handler):
     Multiplication should have a one-like value such a * Math.one == a.
 
     Multiplication should also be distributive with respect to addition.
+
+    There should be a "zero" value that is neutral w/r/t addition.
+
+    There should be a "one" value that is neutral w/r/t multiplication.
     """
     global Math
     Math = handler
