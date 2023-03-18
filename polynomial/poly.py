@@ -97,9 +97,12 @@ def enforce_dict_types(dct, key_type, value_type):
 
 
 def enforce_legal_variable_name(var_name):
+    enforce_type(var_name, str)
     for c in ",*+/-()":
         if c in var_name:
             raise ValueError(f"Do not use variable names that include {c}.")
+    if not var_name.isidentifier():
+        raise ValueError(f"Use a more Python-friendly name for {var_name}.")
 
 
 def enforce_list_element_types(lst, _type):
@@ -136,8 +139,8 @@ class _VarPower:
     """
 
     def __init__(self, var_name, exponent):
-        enforce_type(var_name, str)
         enforce_legal_variable_name(var_name)
+
         # We only handle positive powers of variables.
         # Constant values are handled by _Term.
         enforce_type(exponent, int)
