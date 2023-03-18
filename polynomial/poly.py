@@ -551,7 +551,7 @@ class Poly:
         """
         my_vars = self.variables()
         for var, value in var_assignments.items():
-            if type(value) is Poly:
+            if type(value) == Poly:
                 raise ValueError("Use Poly.substitute instead")
             enforce_type(value, Math.value_type)
             if var not in my_vars:
