@@ -3,6 +3,7 @@ Technically, we are talking about commutative rings with
 a multiplicative identity element (which we call "one").
 """
 
+
 def test(samples, *, zero, one):
     assert zero * zero == zero
     assert zero * one == zero
@@ -30,10 +31,12 @@ def test(samples, *, zero, one):
                 assert (a + b) + c == a + (b + c)
                 assert (a * b) * c == (a * b) * c
 
+
 if __name__ == "__main__":
     samples = [-7, 42, 13, 9, 4567, 14]
     test(samples, zero=0, one=1)
 
     from fractions import Fraction
+
     samples = [Fraction(1, 3), Fraction(-2, 7), Fraction(43, 13)]
     test(samples, zero=Fraction(0), one=Fraction(1))
