@@ -7,28 +7,36 @@ class NumberList:
         self.simplify()
 
     def __add__(self, other):
-        return NumberList.add(self.lst, other.lst)
+        return NumberList.add(self, other)
 
     def __eq__(self, other):
-        return self.lst == other.lst
+        return NumberList.equal(self, other)
 
     def __mul__(self, other):
-        return NumberList.mul(self.lst, other.lst)
+        return NumberList.mul(self, other)
 
     def __neg__(self):
-        return NumberList.mul_constant(-1, self.lst)
+        return NumberList.negate(self)
 
     def simplify(self):
         self.lst = NumberList.simplify_list(self.lst)
 
     @staticmethod
-    def add(lst1, lst2):
+    def add(number_list1, number_list2):
+        lst1 = number_list1.lst
+        lst2 = number_list2.lst
         # do the analog of elementary school arithmetic
         new_size = max(len(lst1), len(lst2))
         return NumberList([arr_get(lst1, i) + arr_get(lst2, i) for i in range(new_size)])
 
     @staticmethod
-    def mul(lst1, lst2):
+    def equal(number_list1, number_list2):
+        return number_list2.lst == number_list2.lst
+
+    @staticmethod
+    def mul(number_list1, number_list2):
+        lst1 = number_list1.lst
+        lst2 = number_list2.lst
         # do the analog of elementary school arithmetic
         result = NumberList([])
         for i, elem in enumerate(lst1):
@@ -38,6 +46,11 @@ class NumberList:
     @staticmethod
     def mul_constant(c, lst):
         return NumberList([c * elem for elem in lst])
+
+    @staticmethod
+    def negate(number_list):
+        lst = number_list.lst
+        return NumberList([-elem for elem in lst])
 
     @staticmethod
     def simplify_list(lst): 
