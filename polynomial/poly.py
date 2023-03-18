@@ -90,6 +90,12 @@ def set_math(handler):
     Math = handler
 
 
+def enforce_dict_types(dct, key_type, value_type):
+    for key, value in dct.items():
+        enforce_type(key, key_type)
+        enforce_type(value, value_type)
+
+
 def enforce_legal_variable_name(var_name):
     for c in ",*+/-()":
         if c in var_name:
@@ -202,9 +208,7 @@ class _Term:
         If none of the vars are in our term, then we just
         return ourself.  See Poly.apply for more context.
         """
-        for var, value in var_assignments.items():
-            enforce_type(var, str)
-            enforce_type(value, Math.value_type)
+        enforce_dict_types(var_assignments, str, Math.value_type)
 
         if not set(var_assignments) & set(self.var_dict):
             return self
@@ -233,7 +237,7 @@ class _Term:
 
     def degree_of_var(self, var_name):
         """
-        For 5*(x**2)*(z**11), t.degree_of_var("z") = 1
+        For t == 5*(x**2)*(z**11), t.degree_of_var("z") = 11
         """
         enforce_type(var_name, str)
         return self.var_dict.get(var_name, 0)
@@ -248,9 +252,7 @@ class _Term:
         to check each of its terms to see which variables
         are used.)
         """
-        for var, value in var_assignments.items():
-            enforce_type(var, str)
-            enforce_type(value, Math.value_type)
+        enforce_dict_types(var_assignments, str, Math.value_type)
 
         for var_name in self.var_names:
             if var_name not in var_assignments:
@@ -578,9 +580,7 @@ class Poly:
         """
         my_var_names = self.variables()
 
-        for var_name, value in var_assignments.items():
-            enforce_type(var_name, str)
-            enforce_type(value, Math.value_type)
+        enforce_dict_types(var_assignments, str, Math.value_type)
 
         for var_name in my_var_names:
             if var_name not in var_assignments:
