@@ -83,10 +83,6 @@ def set_math(handler):
     Multiplication should have a one-like value such a * Math.one == a.
 
     Multiplication should also be distributive with respect to addition.
-
-    There should be a "zero" value that is neutral w/r/t addition.
-
-    There should be a "one" value that is neutral w/r/t multiplication.
     """
     global Math
     Math = handler
