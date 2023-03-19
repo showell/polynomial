@@ -125,6 +125,9 @@ class SingleVarPoly:
     def new(self, lst):
         return SingleVarPoly(lst, self.math, self.var_name)
 
+    def one(self):
+        return self.new([self.math.one])
+
     def polynomial_string(self):
         var_name = self.var_name
         zero = self.math.zero
@@ -154,6 +157,17 @@ class SingleVarPoly:
         ]
         return "+".join(reversed(terms))
 
+    def raised_to_exponent(self, exponent):
+        enforce_type(exponent, int)
+        if exponent < 0:
+            raise ValueError("we do not support negative exponents")
+
+        if exponent == 0:
+            return self.one()
+        if exponent == 1:
+            return self
+        return self * self.raised_to_exponent(exponent - 1)
+
     def simplify(self):
         lst = self.lst
         zero = self.math.zero
@@ -180,6 +194,7 @@ class SingleVarPoly:
 
 
 if __name__ == "__main__":
+    import commutative_ring
 
     class IntegerMath:
         add = lambda a, b: a + b
@@ -203,8 +218,6 @@ if __name__ == "__main__":
 
     assert IntegerPoly([7, 8]) * IntegerPoly([1, 6]) == IntegerPoly([7, 50, 48])
     assert 87 * 61 == 48 * 100 + 50 * 10 + 7
-
-    import commutative_ring
 
     samples = [
         IntegerPoly([]),
@@ -230,3 +243,10 @@ if __name__ == "__main__":
     assert_str(p, "x**3+(5)*x**2+(7)*x+5")
 
     assert p.eval(10) == 1575
+    assert p.eval(100) == 1050705
+
+    q = p.raised_to_exponent(3)
+    assert_str(
+        q,
+        "x**9+(15)*x**8+(96)*x**7+(350)*x**6+(822)*x**5+(1320)*x**4+(1468)*x**3+(1110)*x**2+(525)*x+125",
+    )

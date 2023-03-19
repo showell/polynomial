@@ -56,7 +56,10 @@ class ValueList:
         # do the analog of elementary school arithmetic
         new_size = max(len(lst1), len(lst2))
         return self.new(
-            [add(arr_get(lst1, i, zero), arr_get(lst2, i, zero)) for i in range(new_size)]
+            [
+                add(arr_get(lst1, i, zero), arr_get(lst2, i, zero))
+                for i in range(new_size)
+            ]
         )
 
     def enforce_partner_type(self, other):
