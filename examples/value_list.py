@@ -127,3 +127,32 @@ if __name__ == "__main__":
     zero = IntegerList([])
     one = IntegerList([1])
     commutative_ring.test(samples, zero=zero, one=one)
+
+    from number_list import NumberList
+
+    class NumberListMath:
+        additive_inverse = lambda a: -a
+        multiply_by_constant = lambda c, num_list: NumberList(
+            NumberList.mul_by_constant(c, num_list.lst)
+        )
+        value_type = NumberList
+        zero = NumberList([])
+
+    def NumberListList(lst):
+        return ValueList(lst, NumberListMath)
+
+    x = NumberList([42, 39, 2])
+    y = NumberList([-8, 0, -5888, 0, 5])
+    z = NumberList([103, 8256523499])
+
+    samples = [
+        NumberListList([x, y, z, x]),
+        NumberListList([z]),
+        NumberListList([y, z, y, z, x]),
+        NumberListList([x, x, x, x, x, x, x, z, y]),
+    ]
+
+    zero = NumberListList([])
+    one = NumberListList([NumberList([1])])
+
+    commutative_ring.test(samples, zero=zero, one=one)

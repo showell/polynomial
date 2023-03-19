@@ -43,11 +43,11 @@ class NumberList:
         # do the analog of elementary school arithmetic
         result = NumberList([])
         for i, elem in enumerate(lst1):
-            result += NumberList.mul_constant(elem, [0] * i + lst2)
+            result += NumberList.mul_by_constant(elem, [0] * i + lst2)
         return result
 
     @staticmethod
-    def mul_constant(c, lst):
+    def mul_by_constant(c, lst):
         return NumberList([c * elem for elem in lst])
 
     @staticmethod
