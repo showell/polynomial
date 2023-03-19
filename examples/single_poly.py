@@ -2,11 +2,6 @@ def arr_get(lst, i, zero):
     return lst[i] if i < len(lst) else zero
 
 
-def assert_str(p, expected_str):
-    if str(p) != expected_str:
-        raise AssertionError(f"got {p} when expecting {expected_str}")
-
-
 def enforce_list_types(lst, _type):
     assert type(lst) == list
     for elem in lst:
@@ -195,6 +190,10 @@ class SingleVarPoly:
 
 if __name__ == "__main__":
     import commutative_ring
+
+    def assert_str(p, expected_str):
+        if str(p) != expected_str:
+            raise AssertionError(f"got {p} when expecting {expected_str}")
 
     class IntegerMath:
         add = lambda a, b: a + b

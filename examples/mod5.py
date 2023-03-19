@@ -17,6 +17,9 @@ class Mod5:
             return self
         return Mod5(5 - self.n)
 
+    def __pow__(self, exp):
+        return self.raised_to_exponent(exp)
+
     def __str__(self):
         return str(self.n)
 
@@ -26,7 +29,6 @@ class Mod5:
         if exponent == 1:
             return self
         return self * self.raised_to_exponent(exponent - 1)
-
 
 if __name__ == "__main__":
     import commutative_ring
@@ -56,7 +58,7 @@ if __name__ == "__main__":
         add = lambda a, b: a + b
         additive_inverse = lambda a: -a
         multiply_by_constant = lambda a, b: a * b
-        power = lambda m, exp: m.raised_to_exponent(exp)
+        power = lambda m, exp: m ** exp
         value_type = Mod5
 
         zero = Mod5(0)
@@ -81,5 +83,6 @@ if __name__ == "__main__":
         Mod5Poly([three, one, four, two]),
         Mod5Poly([two]),
         (p_x * p_two) + p_one,
+        (p_x + p_three).raised_to_exponent(15),
     ]
     commutative_ring.test(poly_samples, zero=p_zero, one=p_one)
