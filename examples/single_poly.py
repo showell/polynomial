@@ -251,14 +251,17 @@ if __name__ == "__main__":
         "x**9+(15)*x**8+(96)*x**7+(350)*x**6+(822)*x**5+(1320)*x**4+(1468)*x**3+(1110)*x**2+(525)*x+125",
     )
 
+    ip_zero = zero
+    ip_one = one
+
     class IntegerPolyMath:
         add = lambda a, b: a + b
         additive_inverse = lambda a: -a
         multiply_by_constant = lambda a, b: a * b
         power = lambda poly, exp: poly.raised_to_exponent(exp)
         value_type = SingleVarPoly
-        zero = zero
-        one = one
+        zero = ip_zero
+        one = ip_one
 
     def PolyPoly(lst):
         return SingleVarPoly(lst, IntegerPolyMath, "p")
