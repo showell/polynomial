@@ -18,13 +18,6 @@ def enforce_math_protocol(math):
     assert type(math.zero) == math.value_type
 
 
-class IntegerMath:
-    additive_inverse = lambda a: -1 * a
-    multiply_by_constant = lambda a, b: a * b
-    value_type = int
-    zero = 0
-
-
 class ValueList:
     def __init__(self, lst, math):
         enforce_math_protocol(math)
@@ -101,6 +94,12 @@ class ValueList:
 
 
 if __name__ == "__main__":
+
+    class IntegerMath:
+        additive_inverse = lambda a: -1 * a
+        multiply_by_constant = lambda a, b: a * b
+        value_type = int
+        zero = 0
 
     def IntegerList(lst):
         return ValueList(lst, IntegerMath)
