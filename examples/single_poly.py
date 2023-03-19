@@ -35,10 +35,10 @@ def enforce_math_protocol(math):
     add = math.add
     assert type(one) == math.value_type
     assert type(zero) == math.value_type
-    assert power(zero, one) == zero
-    assert power(one, zero) == one
-    assert power(one, one) == one
-    assert power(one, add(one, one)) == one
+    assert power(zero, 0) == one
+    assert power(one, 0) == one
+    assert power(one, 1) == one
+    assert power(one, 2) == one
 
 
 class SingleVarPoly:
@@ -198,7 +198,7 @@ if __name__ == "__main__":
 
     class IntegerMath:
         add = lambda a, b: a + b
-        additive_inverse = lambda a: -1 * a
+        additive_inverse = lambda a: -a
         multiply_by_constant = lambda a, b: a * b
         power = lambda n, p: n**p
         value_type = int
@@ -250,3 +250,35 @@ if __name__ == "__main__":
         q,
         "x**9+(15)*x**8+(96)*x**7+(350)*x**6+(822)*x**5+(1320)*x**4+(1468)*x**3+(1110)*x**2+(525)*x+125",
     )
+
+    class IntegerPolyMath:
+        add = lambda a, b: a + b
+        additive_inverse = lambda a: -a
+        multiply_by_constant = lambda a, b: a * b
+        power = lambda poly, exp: poly.raised_to_exponent(exp)
+        value_type = SingleVarPoly
+        zero = zero
+        one = one
+
+    def PolyPoly(lst):
+        return SingleVarPoly(lst, IntegerPolyMath, "p")
+
+    assert PolyPoly([one, two]) + PolyPoly([two]) == PolyPoly([three, two])
+    assert PolyPoly([one, one]) * PolyPoly([one, one]) == PolyPoly([one, two, one])
+
+    pp = PolyPoly([one, two, x])
+    assert_str(pp, "(x)*p**2+(2)*p+1")
+    assert_str(pp * pp, "(x**2)*p**4+((4)*x)*p**3+((2)*x+4)*p**2+(4)*p+1")
+    assert_str(pp.eval(x + one), "x**3+(2)*x**2+(3)*x+3")
+    assert_str(pp.eval(x * x * x + three), "x**7+(6)*x**4+(2)*x**3+(9)*x+7")
+
+    samples = [
+        PolyPoly([one, two, three]),
+        PolyPoly([p, q, x, p, q, x]),
+        PolyPoly([x + one, x + two, p + three]),
+    ]
+
+    pp_zero = PolyPoly([])
+    pp_one = PolyPoly([one])
+
+    commutative_ring.test(samples, zero=pp_zero, one=pp_one)
