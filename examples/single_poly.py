@@ -18,15 +18,27 @@ def enforce_type(x, _type):
 
 
 def enforce_math_protocol(math):
+    assert hasattr(math, "add")
     assert hasattr(math, "additive_inverse")
     assert hasattr(math, "multiply_by_constant")
+    assert hasattr(math, "power")
     assert hasattr(math, "value_type")
     assert hasattr(math, "one")
     assert hasattr(math, "zero")
+    assert callable(math.add)
     assert callable(math.additive_inverse)
     assert callable(math.multiply_by_constant)
-    assert type(math.one) == math.value_type
-    assert type(math.zero) == math.value_type
+    assert callable(math.power)
+    one = math.one
+    zero = math.zero
+    power = math.power
+    add = math.add
+    assert type(one) == math.value_type
+    assert type(zero) == math.value_type
+    assert power(zero, one) == zero
+    assert power(one, zero) == one
+    assert power(one, one) == one
+    assert power(one, add(one, one)) == one
 
 
 class SingleVarPoly:
@@ -75,6 +87,18 @@ class SingleVarPoly:
     def enforce_partner_type(self, other):
         assert type(other) == SingleVarPoly
         assert type(other.math) == type(self.math)
+        assert self.var_name == other.var_name
+
+    def eval(self, x):
+        add = self.math.add
+        mul = self.math.multiply_by_constant
+        power = lambda degree: self.math.power(x, degree)
+
+        result = self.math.zero
+        for degree, coeff in enumerate(self.lst):
+            term = mul(coeff, power(degree))
+            result = add(result, term)
+        return result
 
     def multiply_by_constant(self, c, lst):
         enforce_list_types(lst, self.math.value_type)
@@ -147,12 +171,21 @@ class SingleVarPoly:
         x = make([math.zero, math.one])
         return zero, one, x
 
+    @staticmethod
+    def constant(c, math, var_name):
+        enforce_math_protocol(math)
+        enforce_type(var_name, str)
+        enforce_type(c, math.value_type)
+        return SingleVarPoly([c], math, var_name)
+
 
 if __name__ == "__main__":
 
     class IntegerMath:
+        add = lambda a, b: a + b
         additive_inverse = lambda a: -1 * a
         multiply_by_constant = lambda a, b: a * b
+        power = lambda n, p: n**p
         value_type = int
         zero = 0
         one = 1
@@ -183,7 +216,17 @@ if __name__ == "__main__":
     zero, one, x = SingleVarPoly.base_values(IntegerMath, "x")
     commutative_ring.test(samples, zero=zero, one=one)
 
+    two = SingleVarPoly.constant(2, IntegerMath, "x")
+    three = two + one
+
     assert_str(zero, "0")
     assert_str(one, "1")
+    assert_str(two, "2")
+    assert_str(three, "3")
     assert_str(x, "x")
     assert_str(IntegerPoly([1, 2, 3, 4]), "(4)*x**3+(3)*x**2+(2)*x+1")
+
+    p = (x + one) * (x + three) * (x + one) + two
+    assert_str(p, "x**3+(5)*x**2+(7)*x+5")
+
+    assert p.eval(10) == 1575
